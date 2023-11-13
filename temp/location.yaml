@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: aws-organization
+spec:
+  type: aws-cloud-accounts
+  target: 669454931972
