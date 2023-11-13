@@ -36,22 +36,23 @@ import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPage } from '@backstage/core-components';
 
+import { AutoLogout } from '@backstage/core-components';
 
 const app = createApp({
-    components: {
-        SignInPage: props => (
-            <SignInPage
-                {...props}
-                auto
-                provider={{
-                    id: 'github-auth-provider',
-                    title: 'GitHub',
-                    message: 'Sign in using GitHub',
-                    apiRef: githubAuthApiRef,
-                }}
-            />
-        ),
-    },
+  components: {
+    SignInPage: props => (
+      <SignInPage
+        {...props}
+        auto
+        provider={{
+          id: 'github-auth-provider',
+          title: 'GitHub',
+          message: 'Sign in using GitHub',
+          apiRef: githubAuthApiRef,
+        }}
+      />
+    ),
+  },
   apis,
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
@@ -117,6 +118,14 @@ export default app.createRoot(
   <>
     <AlertDisplay />
     <OAuthRequestDialog />
+    <AppRouter>
+      <Root>{routes}</Root>
+    </AppRouter>
+    <AutoLogout
+      idleTimeoutMinutes={180}
+      useWorkerTimers={false}
+      logoutIfDisconnected={false}
+    />
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>

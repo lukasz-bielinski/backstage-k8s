@@ -140,4 +140,14 @@ aws:
     accountId: ${AWS_ACCOUNT_NUMBER}
     accessKeyId: ${AWS_ACCESS_KEY_ID}
     secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
-    region: ${AWS_REGION}$ 
+    region: ${AWS_REGION}$
+
+proxy:
+  '/argocd/api':
+    target: https://${ARGOCD_ADDRESS}/api/v1/
+    changeOrigin: true
+    # only if your argocd api has self-signed cert
+    secure: false
+    headers:
+      Cookie:
+        $env: ARGOCD_AUTH_TOKEN
