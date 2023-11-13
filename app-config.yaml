@@ -65,7 +65,7 @@ integrations:
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local' # Alternatives - 'local'
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
@@ -92,62 +92,73 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
+    - type: aws-eks
+      target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
+#    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+#    - type: file
+#      target: ../../examples/entities.yaml
+#
+#    # Local example template
+#    - type: file
+#      target: ../../examples/template/template.yaml
+#      rules:
+#        - allow: [Template]
+#
+#    # Local example organizational data
+#    - type: file
+#      target: ../../examples/org.yaml
+#      rules:
+#        - allow: [User, Group]
+#
+#    ## Uncomment these lines to add more example data
+#    - type: url
+#      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+#
+#    ## Uncomment these lines to add an example org
+#    - type: url
+#      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
+#      rules:
+#        - allow: [User, Group]
 
-    # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
 
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-
-    ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
+#kubernetes:
+#  serviceLocatorMethod:
+#    type: 'multiTenant'
+#  clusterLocatorMethods:
+#    - type: 'config'
+#      clusters:
+#        - url: ${AWS_EKS_CLUSTER_URL}
+#          name: ${AWS_EKS_CLUSTER_NAME}
+#          authProvider: 'aws'
+#          caData: ${EKS_CA_DATA}
+#    - type: 'catalog'
+#
+#aws:
+#  mainAccount:
+#    accountId: ${AWS_ACCOUNT_NUMBER}
+#    accessKeyId: ${AWS_ACCESS_KEY_ID}
+#    secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+#    region: ${AWS_REGION}
 
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
-    - type: 'config'
-      clusters:
-        - url: ${AWS_EKS_CLUSTER_URL}
-          name: ${AWS_EKS_CLUSTER_NAME}
-          authProvider: 'aws'
-          caData: ${EKS_CA_DATA}
-#    - type: 'config'
-#      clusters:
-#        - url: kubernetes.default.svc.cluster.local:443
-#          name: local
-#          authProvider: 'serviceAccount'
-#          skipTLSVerify: true
-#          skipMetricsLookup: true
+    - type: 'catalog'
 aws:
-  mainAccount:
-    accountId: ${AWS_ACCOUNT_NUMBER}
-    accessKeyId: ${AWS_ACCESS_KEY_ID}
-    secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
-    region: ${AWS_REGION}$
+  credentials:
+    roleArn: ${ANNOTATION_AWS_ARN}
 
 proxy:
   '/argocd/api':
     target: https://${ARGOCD_ADDRESS}/api/v1/
     changeOrigin: true
-    # only if your argocd api has self-signed cert
     secure: false
     headers:
       Cookie:
         $env: ARGOCD_AUTH_TOKEN
+
+
+logging:
+  root:
+    level: debug

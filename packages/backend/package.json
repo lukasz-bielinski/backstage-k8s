@@ -16,6 +16,7 @@
     "build-image": "docker build ../.. -f Dockerfile --tag backstage"
   },
   "dependencies": {
+    "@aws-sdk/credential-provider-node": "^3.449.0",
     "@backstage/backend-common": "^0.19.8",
     "@backstage/backend-tasks": "^0.5.11",
     "@backstage/catalog-client": "^1.4.5",
@@ -25,6 +26,7 @@
     "@backstage/plugin-auth-backend": "^0.19.4",
     "@backstage/plugin-auth-node": "^0.4.0",
     "@backstage/plugin-catalog-backend": "^1.14.0",
+    "@backstage/plugin-catalog-backend-module-aws": "^0.3.0",
     "@backstage/plugin-kubernetes-backend": "^0.13.0",
     "@backstage/plugin-permission-common": "^0.7.9",
     "@backstage/plugin-permission-node": "^0.7.17",
@@ -35,6 +37,7 @@
     "@backstage/plugin-search-backend-node": "^1.2.10",
     "@backstage/plugin-techdocs-backend": "^1.8.0",
     "app": "link:../app",
+    "aws-sdk": "^2.1494.0",
     "better-sqlite3": "^8.0.0",
     "dockerode": "^3.3.1",
     "express": "^4.17.1",

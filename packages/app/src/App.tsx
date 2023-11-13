@@ -36,7 +36,7 @@ import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { SignInPage } from '@backstage/core-components';
 
-import { AutoLogout } from '@backstage/core-components';
+// import { AutoLogout } from '@backstage/core-components';
 
 const app = createApp({
   components: {
@@ -121,11 +121,11 @@ export default app.createRoot(
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>
-    <AutoLogout
-      idleTimeoutMinutes={180}
-      useWorkerTimers={false}
-      logoutIfDisconnected={false}
-    />
+    {/*<AutoLogout*/}
+    {/*  idleTimeoutMinutes={180}*/}
+    {/*  useWorkerTimers={false}*/}
+    {/*  logoutIfDisconnected={false}*/}
+    {/*/>*/}
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>
