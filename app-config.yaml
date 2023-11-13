@@ -49,7 +49,7 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
-  
+
   #proxy:
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
@@ -71,7 +71,9 @@ techdocs:
 
 auth:
   experimentalExtraAllowedOrigins:
-    - https://${BACKSTAGE_DOMAIN}
+    - ${BACKSTAGE_DOMAIN}
+    - https://*.*.*
+    - https://*.*
   # see https://backstage.io/docs/auth/ to learn about auth providers
   environment: development
   providers:
