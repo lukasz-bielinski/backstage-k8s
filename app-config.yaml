@@ -33,6 +33,7 @@ backend:
   database:
     client: better-sqlite3
     connection: ':memory:'
+# TODO: why is this failing
 #      client: pg
 #      connection:
 #        host: ${POSTGRES_HOST}
