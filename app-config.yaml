@@ -92,8 +92,6 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
-    - type: aws-eks
-      target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
@@ -125,14 +123,8 @@ kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
-    - type: 'config'
-      clusters:
-        - url: ${AWS_EKS_CLUSTER_URL}
-          name: ${AWS_EKS_CLUSTER_NAME}
-          authProvider: 'aws'
-          caData: ${EKS_CA_DATA}
     - type: 'catalog'
-#
+
 aws:
   mainAccount:
     accountId: ${ANNOTATION_AWS_ACCOUNT_ID}
@@ -140,17 +132,7 @@ aws:
     secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
     region: ${AWS_REGION}
 
-#kubernetes:
-#  serviceLocatorMethod:
-#    type: 'multiTenant'
-#  clusterLocatorMethods:
-#    - type: 'catalog'
-#aws:
-#  mainAccount:
-#    roleName: ${ANNOTATION_AWS_ARN}
-#    region: ${AWS_REGION}
-#  accounts:
-#  accountDefaults:
+
 
 proxy:
   '/argocd/api':
@@ -160,3 +142,4 @@ proxy:
     headers:
       Cookie:
         $env: ARGOCD_AUTH_TOKEN
+

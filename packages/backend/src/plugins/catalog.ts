@@ -10,14 +10,15 @@ export default async function createPlugin(
 ): Promise<Router> {
   const builder = await CatalogBuilder.create(env);
   builder.addProcessor(new ScaffolderEntitiesProcessor());
+  builder.addProcessor(
+    new AwsEKSClusterProcessor({
+      credentialsFactory: () =>
+        new AWS.CredentialProviderChain().resolvePromise(),
+    }),
+  );
+
   const { processingEngine, router } = await builder.build();
 
-  // builder.addProcessor(
-  //   new AwsEKSClusterProcessor({
-  //     credentialsFactory: () =>
-  //       new AWS.CredentialProviderChain().resolvePromise(),
-  //   }),
-  // );
   await processingEngine.start();
   return router;
 }
