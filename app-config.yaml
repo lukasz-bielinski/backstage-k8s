@@ -94,60 +94,63 @@ catalog:
   locations:
     - type: aws-eks
       target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
-#    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-#    - type: file
-#      target: ../../examples/entities.yaml
-#
-#    # Local example template
-#    - type: file
-#      target: ../../examples/template/template.yaml
-#      rules:
-#        - allow: [Template]
-#
-#    # Local example organizational data
-#    - type: file
-#      target: ../../examples/org.yaml
-#      rules:
-#        - allow: [User, Group]
-#
-#    ## Uncomment these lines to add more example data
-#    - type: url
-#      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-#
-#    ## Uncomment these lines to add an example org
-#    - type: url
-#      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-#      rules:
-#        - allow: [User, Group]
+    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    - type: file
+      target: ../../examples/entities.yaml
 
+    # Local example template
+    - type: file
+      target: ../../examples/template/template.yaml
+      rules:
+        - allow: [Template]
 
-#kubernetes:
-#  serviceLocatorMethod:
-#    type: 'multiTenant'
-#  clusterLocatorMethods:
-#    - type: 'config'
-#      clusters:
-#        - url: ${AWS_EKS_CLUSTER_URL}
-#          name: ${AWS_EKS_CLUSTER_NAME}
-#          authProvider: 'aws'
-#          caData: ${EKS_CA_DATA}
-#    - type: 'catalog'
-#
-#aws:
-#  mainAccount:
-#    accountId: ${AWS_ACCOUNT_NUMBER}
-#    accessKeyId: ${AWS_ACCESS_KEY_ID}
-#    secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
-#    region: ${AWS_REGION}
+    # Local example organizational data
+    - type: file
+      target: ../../examples/org.yaml
+      rules:
+        - allow: [User, Group]
+
+    ## Uncomment these lines to add more example data
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+
+    ## Uncomment these lines to add an example org
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
+      rules:
+        - allow: [User, Group]
+
 
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: ${AWS_EKS_CLUSTER_URL}
+          name: ${AWS_EKS_CLUSTER_NAME}
+          authProvider: 'aws'
+          caData: ${EKS_CA_DATA}
     - type: 'catalog'
+#
 aws:
-  credentials:
-    roleArn: ${ANNOTATION_AWS_ARN}
+  mainAccount:
+    accountId: ${ANNOTATION_AWS_ACCOUNT_ID}
+    accessKeyId: ${AWS_ACCESS_KEY_ID}
+    secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+    region: ${AWS_REGION}
+
+#kubernetes:
+#  serviceLocatorMethod:
+#    type: 'multiTenant'
+#  clusterLocatorMethods:
+#    - type: 'catalog'
+#aws:
+#  mainAccount:
+#    roleName: ${ANNOTATION_AWS_ARN}
+#    region: ${AWS_REGION}
+#  accounts:
+#  accountDefaults:
 
 proxy:
   '/argocd/api':
@@ -157,8 +160,3 @@ proxy:
     headers:
       Cookie:
         $env: ARGOCD_AUTH_TOKEN
-
-
-logging:
-  root:
-    level: debug

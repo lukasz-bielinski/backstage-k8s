@@ -121,11 +121,11 @@ export default app.createRoot(
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>
-    {/*<AutoLogout*/}
-    {/*  idleTimeoutMinutes={180}*/}
-    {/*  useWorkerTimers={false}*/}
-    {/*  logoutIfDisconnected={false}*/}
-    {/*/>*/}
+    <AutoLogout
+      idleTimeoutMinutes={180}
+      useWorkerTimers={false}
+      logoutIfDisconnected={false}
+    />
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>
