@@ -1,10 +1,10 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: users-api2
+  name: users-api
   description: Users api
   annotations:
-    backstage.io/kubernetes-id: users-api2
+    backstage.io/kubernetes-id: users-api
   tags:
     - nginx2
     - k8s2
