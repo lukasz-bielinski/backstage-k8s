@@ -12,12 +12,12 @@ export default async function createPlugin(
   builder.addProcessor(new ScaffolderEntitiesProcessor());
   const { processingEngine, router } = await builder.build();
 
-  builder.addProcessor(
-    new AwsEKSClusterProcessor({
-      credentialsFactory: () =>
-        new AWS.CredentialProviderChain().resolvePromise(),
-    }),
-  );
+  // builder.addProcessor(
+  //   new AwsEKSClusterProcessor({
+  //     credentialsFactory: () =>
+  //       new AWS.CredentialProviderChain().resolvePromise(),
+  //   }),
+  // );
   await processingEngine.start();
   return router;
 }
