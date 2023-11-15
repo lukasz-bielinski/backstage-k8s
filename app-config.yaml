@@ -73,8 +73,17 @@ techdocs:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
+  experimentalExtraAllowedOrigins:
+    - ${BACKSTAGE_DOMAIN}
+    - https://*.*.*
+    - https://*.*
   # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -118,10 +127,9 @@ catalog:
 
 aws:
   mainAccount:
-    accountId: ${ANNOTATION_AWS_ACCOUNT_ID}
-    accessKeyId: ${AWS_ACCESS_KEY_ID}
-    secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+    roleName: ${ANNOTATION_AWS_ARN}
     region: ${AWS_REGION}
+    
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
