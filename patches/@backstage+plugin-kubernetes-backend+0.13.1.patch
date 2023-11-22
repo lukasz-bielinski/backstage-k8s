@@ -1,0 +1,130 @@
+diff --git a/node_modules/@backstage/plugin-kubernetes-backend/dist/index.cjs.js b/node_modules/@backstage/plugin-kubernetes-backend/dist/index.cjs.js
+index bc7b7e2..2338865 100644
+--- a/node_modules/@backstage/plugin-kubernetes-backend/dist/index.cjs.js
++++ b/node_modules/@backstage/plugin-kubernetes-backend/dist/index.cjs.js
+@@ -64,6 +64,8 @@ class AksStrategy {
+ }
+ 
+ class AnonymousStrategy {
++
++
+   async getCredential() {
+     return { type: "anonymous" };
+   }
+@@ -80,7 +82,9 @@ var __publicField$a = (obj, key, value) => {
+ };
+ const defaultRegion = "us-east-1";
+ class AwsIamStrategy {
+-  constructor(opts) {
++  // console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: AwsIamStrategy`);  // Cyan color
++
++constructor(opts) {
+     __publicField$a(this, "credsManager");
+     this.credsManager = integrationAwsNode.DefaultAwsCredentialsManager.fromConfig(opts.config);
+   }
+@@ -93,32 +97,46 @@ class AwsIamStrategy {
+         clusterDetails.authMetadata[pluginKubernetesCommon.ANNOTATION_KUBERNETES_AWS_EXTERNAL_ID]
+       )
+     };
++
+   }
+   validateCluster() {
+     return [];
+   }
+   async getBearerToken(clusterName, assumeRole, externalId) {
++    console.log('DEBUGAWS: getBearerToken clusterName:', clusterName);
++
+     var _a, _b;
+     const region = (_a = process.env.AWS_REGION) != null ? _a : defaultRegion;
+     let credentials = (await this.credsManager.getCredentialProvider()).sdkCredentialProvider;
++    console.log('DEBUGAWS: Initial credentials:', credentials);
++
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken assumeRole ${assumeRole}`);  // Cyan color
++
+     if (assumeRole) {
+       credentials = credentialProviders.fromTemporaryCredentials({
+         masterCredentials: credentials,
++
+         clientConfig: {
+           region
+         },
++
+         params: {
+           RoleArn: assumeRole,
+           ExternalId: externalId
+         }
+       });
++      console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken credentials ${credentials}`);  // Cyan color
++
+     }
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken externalId ${externalId}`);  // Cyan color
+     const signer = new signatureV4.SignatureV4({
+       credentials,
+       region,
+       service: "sts",
+       sha256: sha256Js.Sha256
+     });
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken signer ${signer}`);  // Cyan color
++
+     const request = await signer.presign(
+       {
+         headers: {
+@@ -136,6 +154,8 @@ class AwsIamStrategy {
+       },
+       { expiresIn: 0 }
+     );
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken request ${request}`);  // Cyan color
++
+     const query = Object.keys((_b = request == null ? void 0 : request.query) != null ? _b : {}).map(
+       (q) => {
+         var _a2;
+@@ -144,7 +164,31 @@ class AwsIamStrategy {
+         )}`;
+       }
+     ).join("&");
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken query ${query}`);  // Cyan color
++
+     const url = `https://${request.hostname}${request.path}?${query}`;
++
++
++    return new Promise((resolve, reject) => {
++      https.get(url, (res) => {
++        let data = '';
++
++        res.on('data', (chunk) => {
++          data += chunk;
++        });
++
++        res.on('end', () => {
++          console.log('DEBUGAWS: Response from AWS STS:', data);
++          resolve(`k8s-aws-v1.${Buffer.from(url).toString("base64url")}`);
++        });
++      }).on('error', (error) => {
++        console.error('DEBUGAWS: Error calling AWS STS:', error);
++        reject(error);
++      });
++    });
++
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: getBearerToken url ${url}`);  // Cyan color
++
+     return `k8s-aws-v1.${Buffer.from(url).toString("base64url")}`;
+   }
+ }
+@@ -249,6 +293,8 @@ class DispatchStrategy {
+   getCredential(clusterDetails, auth) {
+     const authProvider = clusterDetails.authMetadata[pluginKubernetesCommon.ANNOTATION_KUBERNETES_AUTH_PROVIDER];
+     if (this.strategyMap[authProvider]) {
++      console.log('\x1b[36m%s\x1b[0m%s', 'DEBUGAWS:', `Using auth strategy for provider: ${authProvider}`);
++
+       return this.strategyMap[authProvider].getCredential(clusterDetails, auth);
+     }
+     throw new Error(
+@@ -1634,6 +1680,8 @@ class KubernetesBuilder {
+ }
+ 
+ async function createRouter(options) {
++  console.log('\x1b[36m%s\x1b[0m%s', 'DEBUGAWS:', `createRouter`);
++
+   const { router } = await KubernetesBuilder.createBuilder(options).setClusterSupplier(options.clusterSupplier).build();
+   return router;
+ }

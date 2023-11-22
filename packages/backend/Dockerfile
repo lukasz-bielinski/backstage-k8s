@@ -40,6 +40,7 @@ RUN chmod +x ./kubectl
 RUN mv ./kubectl /usr/local/bin
 ###
 
+
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
 
@@ -50,6 +51,9 @@ WORKDIR /app
 
 # This switches many Node.js dependencies to production mode.
 ENV NODE_ENV production
+
+# patches with debeug informations
+COPY patches ./patches
 
 # Copy repo skeleton first, to avoid unnecessary docker cache invalidation.
 # The skeleton contains the package.json of each package in the monorepo,

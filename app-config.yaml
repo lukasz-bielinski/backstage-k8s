@@ -130,10 +130,13 @@ catalog:
 
 aws:
   mainAccount:
+    accounts:
+      # Credentials can come from a role in the account
+      - accountId: ${ANNOTATION_AWS_ACCOUNT_ID}
+        roleName: ${MAIN_ROLE_AWS_ARN}
+  accountDefaults:
     roleName: ${MAIN_ROLE_AWS_ARN}
-#    accounts:
-#      # Credentials can come from a role in the account
-#      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
+
 
 kubernetes:
   serviceLocatorMethod:

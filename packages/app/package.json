@@ -11,7 +11,8 @@
     "build": "backstage-cli package build",
     "clean": "backstage-cli package clean",
     "test": "backstage-cli package test",
-    "lint": "backstage-cli package lint"
+    "lint": "backstage-cli package lint",
+    "postinstall": "npx patch-package"
   },
   "dependencies": {
     "@backstage/app-defaults": "^1.4.5",
