@@ -127,14 +127,20 @@ catalog:
       annotations:
         aws.com/iam-role-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
         ANNOTATION_AWS_ARN: ${DOWNSTREAM_ROLE_AWS_ARN}
+        annotation-aws-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
+        aws-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
+        aws.com/role-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
+        kubernetes.io/aws-assume-role: ${DOWNSTREAM_ROLE_AWS_ARN}
+        kubernetes-aws-assume-role: ${DOWNSTREAM_ROLE_AWS_ARN}
+
 
 aws:
   mainAccount:
     roleName: ${MAIN_ROLE_AWS_ARN}
 #    region: ${AWS_REGION}
-    accounts:
-      # Credentials can come from a role in the account
-      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
+#    accounts:
+#      # Credentials can come from a role in the account
+#      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
 #        region: eu-west-1
 
 
