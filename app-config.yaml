@@ -120,20 +120,20 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
-    - type: aws-eks
-      target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
-    - type: aws-eks
-      target: ${ANNOTATION_AWS_ACCOUNT_ID}/eu-west-1
-      annotations:
-        aws.com/iam-role-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
-        ANNOTATION_AWS_ARN: ${DOWNSTREAM_ROLE_AWS_ARN}
+#    - type: aws-eks
+#      target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
+#    - type: aws-eks
+#      target: ${ANNOTATION_AWS_ACCOUNT_ID}/eu-west-1
+#      annotations:
+#        aws.com/iam-role-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
+#        ANNOTATION_AWS_ARN: ${DOWNSTREAM_ROLE_AWS_ARN}
 
 aws:
   mainAccount:
     roleName: ${MAIN_ROLE_AWS_ARN}
-    accounts:
-      # Credentials can come from a role in the account
-      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
+#    accounts:
+#      # Credentials can come from a role in the account
+#      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
 
 kubernetes:
   serviceLocatorMethod:
