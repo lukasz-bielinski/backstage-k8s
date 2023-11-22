@@ -131,12 +131,9 @@ catalog:
 aws:
   mainAccount:
     roleName: ${MAIN_ROLE_AWS_ARN}
-#    region: ${AWS_REGION}
     accounts:
       # Credentials can come from a role in the account
       - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
-#        region: eu-west-1
-
 
 kubernetes:
   serviceLocatorMethod:
