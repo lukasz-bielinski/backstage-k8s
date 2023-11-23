@@ -1,0 +1,83 @@
+diff --git a/node_modules/@backstage/integration-aws-node/dist/index.cjs.js b/node_modules/@backstage/integration-aws-node/dist/index.cjs.js
+index 54c2948..db97ad8 100644
+--- a/node_modules/@backstage/integration-aws-node/dist/index.cjs.js
++++ b/node_modules/@backstage/integration-aws-node/dist/index.cjs.js
+@@ -6,6 +6,8 @@ var clientSts = require('@aws-sdk/client-sts');
+ var credentialProviders = require('@aws-sdk/credential-providers');
+ var utilArnParser = require('@aws-sdk/util-arn-parser');
+ 
++
++
+ function readAwsIntegrationAccountConfig(config) {
+   const accountConfig = {
+     accountId: config.getString("accountId"),
+@@ -52,6 +54,7 @@ function readAwsIntegrationAccountConfig(config) {
+       `AWS integration account ${accountConfig.accountId} has an IAM partition configured, but no role name.`
+     );
+   }
++  console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: readAwsIntegrationAccountConfig - Account Config:', accountConfig);
+   return accountConfig;
+ }
+ function readMainAwsIntegrationAccountConfig(config) {
+@@ -76,6 +79,7 @@ function readMainAwsIntegrationAccountConfig(config) {
+       `The main AWS integration account has both an access key ID and a profile configured, but only one must be specified`
+     );
+   }
++  console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: readMainAwsIntegrationAccountConfig - Main Account Config:', mainAccountConfig);
+   return mainAccountConfig;
+ }
+ function readAwsIntegrationAccountDefaultsConfig(config) {
+@@ -100,6 +104,7 @@ function readAwsIntegrationAccountDefaultsConfig(config) {
+       `AWS integration account default configuration has an IAM partition configured, but no role name.`
+     );
+   }
++  console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: readAwsIntegrationAccountDefaultsConfig - Default Account Config:', defaultAccountConfig);
+   return defaultAccountConfig;
+ }
+ function readAwsIntegrationConfig(config) {
+@@ -109,6 +114,7 @@ function readAwsIntegrationConfig(config) {
+   const accountDefaults = config.has("accountDefaults") ? readAwsIntegrationAccountDefaultsConfig(
+     config.getConfig("accountDefaults")
+   ) : {};
++  console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: readAwsIntegrationConfig - AWS Integration Config:', awsIntegrationConfig);
+   return {
+     accounts: accounts != null ? accounts : [],
+     mainAccount,
+@@ -118,6 +124,8 @@ function readAwsIntegrationConfig(config) {
+ 
+ async function fillInAccountId(credProvider) {
+   if (credProvider.accountId) {
++    console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: Account ID already present:', credProvider.accountId);
++    console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: Account ID already present:', credProvider.accountId);
+     return;
+   }
+   const client = new clientSts.STSClient({
+@@ -125,7 +133,9 @@ async function fillInAccountId(credProvider) {
+     customUserAgent: "backstage-aws-credentials-manager",
+     credentialDefaultProvider: () => credProvider.sdkCredentialProvider
+   });
++  console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: Calling GetCallerIdentity for account ID resolution`);
+   const resp = await client.send(new clientSts.GetCallerIdentityCommand({}));
++  console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: GetCallerIdentity response:`, resp);
+   credProvider.accountId = resp.Account;
+ }
+ function getStaticCredentials(accessKeyId, secretAccessKey) {
+@@ -149,8 +159,10 @@ function getDefaultCredentialsChain() {
+   return credentialProviders.fromNodeProviderChain();
+ }
+ function getSdkCredentialProvider(config, mainAccountCredProvider) {
++  console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: getSdkCredentialProvider - Configuration:', config);
+   var _a, _b;
+   if (config.roleName) {
++    console.log('\x1b[36m%s\x1b[0m', `DEBUGAWS: Assuming role:`, config.roleName);
+     const region = (_a = config.region) != null ? _a : "us-east-1";
+     const partition = (_b = config.partition) != null ? _b : "aws";
+     return credentialProviders.fromTemporaryCredentials({
+@@ -237,6 +249,7 @@ class DefaultAwsCredentialsManager {
+    * @returns A promise of {@link AwsCredentialProvider}.
+    */
+   async getCredentialProvider(opts) {
++    console.log('\x1b[36m%s\x1b[0m', 'DEBUGAWS: getCredentialProvider - Options:', opts);
+     if (!opts) {
+       return this.mainAccountCredentialProvider;
+     }

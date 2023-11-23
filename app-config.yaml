@@ -52,6 +52,18 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
+  aws:
+    mainAccount:
+      accessKeyId: ${AWS_ACCESS_KEY_ID}
+      secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+      accounts:
+        # Credentials can come from a role in the account
+        - accountId: ${ANNOTATION_AWS_ACCOUNT_ID}
+          roleName: ${MAIN_ROLE_AWS_ARN}
+          region: ${AWS_REGION}
+    accountDefaults:
+      roleName: ${MAIN_ROLE_AWS_ARN}
+      region: ${AWS_REGION}
 
 #proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -130,12 +142,17 @@ catalog:
 
 aws:
   mainAccount:
+#    accessKeyId: ${AWS_ACCESS_KEY_ID}
+#    secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
     accounts:
       # Credentials can come from a role in the account
       - accountId: ${ANNOTATION_AWS_ACCOUNT_ID}
-        roleName: ${MAIN_ROLE_AWS_ARN}
+        roleName: ${AWS_ROLE_ARN}
+        region: ${AWS_REGION}
   accountDefaults:
-    roleName: ${MAIN_ROLE_AWS_ARN}
+    roleName: ${AWS_ROLE_ARN}
+    region: ${AWS_REGION}
+
 
 
 kubernetes:
