@@ -1,7 +1,7 @@
 app:
   title: Backstage App
-  baseUrl: ${BACKSTAGE_DOMAIN}
-#  baseUrl: http://localhost:3000
+#  baseUrl: ${BACKSTAGE_DOMAIN}
+  baseUrl: http://localhost:3000
 
 organization:
   name: XD Dev R&D
@@ -13,8 +13,8 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
-  baseUrl: ${BACKSTAGE_DOMAIN}
-#  baseUrl: http://localhost:7007
+#  baseUrl: ${BACKSTAGE_DOMAIN}
+  baseUrl: http://localhost:7007
   listen:
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
@@ -120,20 +120,20 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
-    - type: aws-eks
-      target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
-    - type: aws-eks
-      target: ${ANNOTATION_AWS_ACCOUNT_ID}/eu-west-1
-      annotations:
-        aws.com/iam-role-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
-        ANNOTATION_AWS_ARN: ${DOWNSTREAM_ROLE_AWS_ARN}
-
-aws:
-  mainAccount:
-    roleName: ${MAIN_ROLE_AWS_ARN}
-    accounts:
-      # Credentials can come from a role in the account
-      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
+#    - type: aws-eks
+#      target: ${ANNOTATION_AWS_ACCOUNT_ID}/${AWS_REGION}
+#    - type: aws-eks
+#      target: ${ANNOTATION_AWS_ACCOUNT_ID}/eu-west-1
+#      annotations:
+#        aws.com/iam-role-arn: ${DOWNSTREAM_ROLE_AWS_ARN}
+#        ANNOTATION_AWS_ARN: ${DOWNSTREAM_ROLE_AWS_ARN}
+#
+#aws:
+#  mainAccount:
+#    roleName: ${MAIN_ROLE_AWS_ARN}
+#    accounts:
+#      # Credentials can come from a role in the account
+#      - roleName: ${DOWNSTREAM_ROLE_AWS_ARN}
 
 kubernetes:
   serviceLocatorMethod:
