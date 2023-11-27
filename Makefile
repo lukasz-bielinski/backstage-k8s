@@ -1,6 +1,6 @@
 # Define variables for docker image name and tag
 IMAGE_NAME := lukaszbielinski/backstage
-IMAGE_TAG := 1.0.1
+IMAGE_TAG := 1.0.2
 
 # Default target executed when no arguments are given to make
 all: build-backend build-image push-image
